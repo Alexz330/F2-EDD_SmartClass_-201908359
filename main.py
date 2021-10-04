@@ -131,7 +131,7 @@ def reporte():
 
 # Crud de estudiantes mi loco, guapo el que lo lea
 
-@app.route('/studentget/', methods=['GET'])
+@app.route('/studentget', methods=['GET'])
 def obtener_estudiante():
     carnet =  request.json['carnet']
     search_student = arbol.search(carnet, arbol.root)
@@ -211,9 +211,10 @@ def postEstudiante():
                          correo, password, credits, edad, None)
     arbol.add(estudiante)
 
-    return "mi loco usted es grande"
+    return f"se agrego el usuario {nombre}"
 
 
+#crun de cursos por estudiante y por "cursos"
 @app.route('/cursosEstudiante', methods=['POST'])
 def postearCursosEstudiante():
     listaEstudiante = request.json['Estudiantes']

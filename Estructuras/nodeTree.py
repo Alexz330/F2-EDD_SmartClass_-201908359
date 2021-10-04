@@ -12,7 +12,7 @@ class node:
         if self.left is None and self.right:
             etiqueta = "nodo"+str(self.student.no_carnet)+"[label =\""+self.student.name+"\"];\n"
         else:
-            etiqueta="nodo"+str(self.student.no_carnet)+" [ label =\"<C0>|"+self.student.name+"|<C1>\"];\n";
+            etiqueta="nodo"+str(self.student.no_carnet)+" [ label =\"<C0>|"+str(self.student.no_carnet)+"\\n"+self.student.name+"\\n "+self.student.career+"|<C1>\"];\n";
 
         if self.left != None:
             contenido = self.left.getCodigoInterno()
