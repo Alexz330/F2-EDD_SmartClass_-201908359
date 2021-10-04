@@ -106,15 +106,16 @@ def cargar():
 @app.route('/reporte', methods=['GET'])
 def reporte():
     tipo = request.json["tipo"]
-    cartnet = request.json["carnet"]
-    año = request.json['año']
-    semestre = request.json['semestre']
+  
     if tipo == 0:
         arbol.graficar()
    
     if tipo == 3:
         arbolBCusrosPensum.graficar()
     if tipo == 4:
+        cartnet = request.json["carnet"]
+        año = request.json['año']
+        semestre = request.json['semestre']
         if arbol.search(cartnet,arbol.root) is not None:
             temporal = arbol.search(cartnet,arbol.root).age_list.first
             while temporal != None:
@@ -131,13 +132,13 @@ def reporte():
 
 # Crud de estudiantes mi loco, guapo el que lo lea
 
-@app.route('/studentget', methods=['GET'])
+@app.route('/obtenerEstudiante', methods=['GET'])
 def obtener_estudiante():
     carnet =  request.json['carnet']
     search_student = arbol.search(carnet, arbol.root)
    
     return jsonify({
-        "no_carnet": search_student.no_carnet,
+        "carnet": search_student.no_carnet,
         "DPI": search_student.DPI,
         "nombre": search_student.name,
         "carrera": search_student.career,
@@ -148,7 +149,7 @@ def obtener_estudiante():
     }
     )
 
-@app.route('/studentUpdate', methods=['PUT'])
+@app.route('/actualizarEstudiante', methods=['PUT'])
 def modificar_estudiante():
     no_carnet = request.json["carnet"]
     dpi = request.json['DPI']
@@ -178,7 +179,7 @@ def modificar_estudiante():
     search_student = arbol.search(no_carnet, arbol.root)
 
     return jsonify({
-        "no_carnet": search_student.no_carnet,
+        "carnet": search_student.no_carnet,
         "DPI": search_student.DPI,
         "nombre": search_student.name,
         "carrera": search_student.career,
@@ -189,22 +190,22 @@ def modificar_estudiante():
     }
     )
 
-@app.route('/deleteStudent', methods=['DELETE'])
+@app.route('/borrarEstudiante', methods=['DELETE'])
 def elimnarEstudiante():
     no_carnet = request.json['carnet']
     arbol.eliminar(no_carnet)
     return jsonify({"estudiantes": dictStudent()})
 
-@app.route('/postEstudiante', methods=['POST'])
+@app.route('/InsertartEstudiante', methods=['POST'])
 def postEstudiante():
 
-    no_carnet = request.json['no_carnet']
+    no_carnet = request.json['carnet']
     DPI = request.json['DPI']
     nombre = request.json["nombre"]
     carrera = request.json["carrera"]
     correo = request.json["correo"]
     password = request.json["password"]
-    credits = request.json["credist"]
+    credits = request.json["creditos"]
     edad = request.json["edad"]
 
     estudiante = Student(no_carnet, DPI, nombre, carrera,
@@ -214,7 +215,7 @@ def postEstudiante():
     return f"se agrego el usuario {nombre}"
 
 
-#crun de cursos por estudiante y por "cursos"
+#crud de cursos por estudiante y por "cursos"
 @app.route('/cursosEstudiante', methods=['POST'])
 def postearCursosEstudiante():
     listaEstudiante = request.json['Estudiantes']
